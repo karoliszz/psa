@@ -1,0 +1,169 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Autonuoma
+build_property.RootNamespace = Autonuoma
+build_property.ProjectDir = C:\Users\User\Desktop\DB lab2\P175B602-autonuoma-dotnet-v2\Autonuoma\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\User\Desktop\DB lab2\P175B602-autonuoma-dotnet-v2\Autonuoma
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Automobilis/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0b21vYmlsaXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Automobilis/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0b21vYmlsaXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Automobilis/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0b21vYmlsaXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Automobilis/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0b21vYmlsaXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Darbuotojas/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFyYnVvdG9qYXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Darbuotojas/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFyYnVvdG9qYXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Darbuotojas/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFyYnVvdG9qYXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Darbuotojas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFyYnVvdG9qYXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Klientas/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2xpZW50YXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Klientas/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2xpZW50YXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Klientas/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2xpZW50YXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Klientas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2xpZW50YXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Marke/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFya2VcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Marke/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFya2VcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Marke/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFya2VcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Marke/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFya2VcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Modelis/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxpc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Modelis/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxpc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Modelis/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxpc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Modelis/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW9kZWxpc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Paslauga/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFzbGF1Z2FcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Paslauga/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFzbGF1Z2FcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Paslauga/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFzbGF1Z2FcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Paslauga/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFzbGF1Z2FcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Reports/Contracts.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xDb250cmFjdHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Reports/LateContracts.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xMYXRlQ29udHJhY3RzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/Reports/Services.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xTZXJ2aWNlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/SutartisF2/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3V0YXJ0aXNGMlxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/SutartisF2/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3V0YXJ0aXNGMlxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/SutartisF2/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3V0YXJ0aXNGMlxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/SutartisF2/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3V0YXJ0aXNGMlxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/_DoNothing.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX0RvTm90aGluZy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/_Exception.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX0V4Y2VwdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/DB lab2/P175B602-autonuoma-dotnet-v2/Autonuoma/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
