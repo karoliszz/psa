@@ -50,11 +50,11 @@
 		gap: 8px;
 	}
 
-	.btn-back:hover {
-		background-color: #f0f0f0;
-		border-color: #ccc;
-		color: #333;
-	}
+		.btn-back:hover {
+			background-color: #f0f0f0;
+			border-color: #ccc;
+			color: #333;
+		}
 
 	/* Section styling */
 	.cart-section {
@@ -65,9 +65,9 @@
 		transition: border-color 0.3s ease;
 	}
 
-	.cart-section:hover {
-		border-color: #1bd15d;
-	}
+		.cart-section:hover {
+			border-color: #1bd15d;
+		}
 
 	.section-title {
 		font-size: 20px;
@@ -80,9 +80,9 @@
 		gap: 10px;
 	}
 
-	.section-title i {
-		color: #1bd15d;
-	}
+		.section-title i {
+			color: #1bd15d;
+		}
 
 	/* List elements */
 	.items-list {
@@ -98,9 +98,9 @@
 		border-bottom: 1px dashed #eee;
 	}
 
-	.item-row:last-child {
-		border-bottom: none;
-    }
+		.item-row:last-child {
+			border-bottom: none;
+		}
 
 	/* Item status states */
 	.item-unavailable {
@@ -155,9 +155,9 @@
 		transition: color 0.2s;
 	}
 
-	.btn-remove:hover {
-		color: #a71d2a;
-	}
+		.btn-remove:hover {
+			color: #a71d2a;
+		}
 
 	.empty-cart-msg {
 		text-align: center;
@@ -174,22 +174,22 @@
 		margin-bottom: 15px;
 	}
 
-	.input-group label {
-		font-weight: bold;
-		color: #555;
-	}
+		.input-group label {
+			font-weight: bold;
+			color: #555;
+		}
 
-	.input-group input, .input-group select {
-		padding: 12px;
-		border: 2px solid #ddd;
-		border-radius: 6px;
-		font-size: 16px;
-		outline: none;
-	}
+		.input-group input, .input-group select {
+			padding: 12px;
+			border: 2px solid #ddd;
+			border-radius: 6px;
+			font-size: 16px;
+			outline: none;
+		}
 
-	.input-group input:focus, .input-group select:focus {
-		border-color: #1bd15d;
-	}
+			.input-group input:focus, .input-group select:focus {
+				border-color: #1bd15d;
+			}
 
 	/* Summary configuration */
 	.summary-box {
@@ -242,16 +242,118 @@
 		transition: transform 0.2s;
 	}
 
-	.btn-checkout:hover:not(:disabled) {
-		transform: translateY(-2px);
+		.btn-checkout:hover:not(:disabled) {
+			transform: translateY(-2px);
+		}
+
+		.btn-checkout:disabled {
+			background-color: #e0e0e0;
+			color: #999;
+			cursor: not-allowed;
+			box-shadow: none;
+		}
+
+	/* --- Pure HTML Dialog Styles --- */
+	.btn-address {
+		background-color: #1bd15d;
+		color: white;
+		border: none;
+		padding: 12px 24px;
+		font-size: 16px;
+		font-weight: bold;
+		border-radius: 6px;
+		cursor: pointer;
+		transition: background-color 0.2s;
 	}
 
-	.btn-checkout:disabled {
-		background-color: #e0e0e0;
-		color: #999;
-		cursor: not-allowed;
-		box-shadow: none;
+		.btn-address:hover {
+			background-color: #16aa4b;
+		}
+
+	/* Custom styling for HTML5 Native Dialog Box */
+	#map-modal {
+		border: none;
+		border-radius: 12px;
+		padding: 30px;
+		width: 90%;
+		max-width: 500px;
+		box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 	}
+
+		/* Dark background backdrop styling */
+		#map-modal::backdrop {
+			background-color: rgba(0, 0, 0, 0.5);
+		}
+
+		#map-modal h4 {
+			font-size: 20px;
+			font-weight: bold;
+			margin-top: 0;
+			margin-bottom: 15px;
+			color: #222;
+		}
+
+	.dummy-map-container {
+		position: relative;
+		width: 100%;
+		height: 220px;
+		margin-bottom: 20px;
+		background: #e9ecef;
+		border: 2px solid #ddd;
+		border-radius: 6px;
+		overflow: hidden;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.dummy-map-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.map-marker {
+		position: absolute;
+		font-size: 2.5rem;
+		color: #dc3545;
+		text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+	}
+
+	.modal-actions {
+		display: flex;
+		gap: 12px;
+		justify-content: flex-end;
+		margin-top: 20px;
+	}
+
+	.btn-confirm {
+		background-color: #1bd15d;
+		color: white;
+		border: none;
+		padding: 10px 20px;
+		font-weight: bold;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+
+		.btn-confirm:hover {
+			background-color: #16aa4b;
+		}
+
+	.btn-cancel {
+		background-color: #6c757d;
+		color: white;
+		border: none;
+		padding: 10px 20px;
+		font-weight: bold;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+
+		.btn-cancel:hover {
+			background-color: #5a6268;
+		}
 </style>
 
 <div class="cart-wrapper">
@@ -263,7 +365,7 @@
 	@* Entity sequence rendering *@
 	<div class="cart-section">
 		<h3 class="section-title"><i class="fa-solid fa-utensils"></i> Jūsų Užsakymai</h3>
-		
+
 		@if (!Model.Items.Any())
 		{
 			<div class="empty-cart-msg">
@@ -273,7 +375,7 @@
 		else
 		{
 			<ul class="items-list">
-				@foreach(var item in Model.Items)
+				@foreach (var item in Model.Items)
 				{
 					<li class="item-row @(item.ArParduodamas ? "" : "item-unavailable")">
 						<div class="item-info">
@@ -301,17 +403,35 @@
 		}
 	</div>
 
-	@* Logistics specification *@
 	<div class="cart-section">
 		<h3 class="section-title"><i class="fa-solid fa-location-dot"></i> Pristatymo Adresas</h3>
-		<div class="input-group">
-			<label for="address">Miestas, Gatvė ir Namo Numeris</label>
-			<input type="text" id="address" placeholder="Pvz.: Gedimino pr. 50, Vilnius" />
-		</div>
-		<div class="input-group">
-			<label for="instructions">Papildoma Informacija Kurjeriui</label>
-			<input type="text" id="instructions" placeholder="Durų kodas, aukštas ar kita..." />
-		</div>
+
+		<!-- The Main Trigger Button -->
+		<button type="button" class="btn-address" onclick="document.getElementById('map-modal').showModal()">Nustatyti užsakymo adresą</button>
+
+		<!-- Success indicator text box so you can visually verify it saved to the DB -->
+		<p id="address-preview" style="margin-top: 15px; font-weight: bold; display: none; color: #222; background: #f8f9fa; padding: 12px; border-radius: 6px; border-left: 4px solid #1bd15d;"></p>
+
+		<!-- Popup Dialog Box -->
+		<dialog id="map-modal">
+			<h4><i class="fa-solid fa-map-location-dot"></i> Pasirinkite adresą</h4>
+
+			<div class="dummy-map-container">
+				<img src="~/images/Screenshot 2026-05-21 005508.png" alt="Žemėlapis" class="dummy-map-img" />
+				<div class="map-marker"><i class="fa-solid fa-location-pin"></i></div>
+			</div>
+
+			<div class="input-group">
+				<label for="modal-address">Miestas, Gatvė ir Namo Numeris</label>
+				<input type="text" id="modal-address" placeholder="Pvz.: Gedimino pr. 50, Vilnius" />
+			</div>
+
+			<div class="modal-actions">
+				<!-- Clicking Gerai fires our background fetch loop -->
+				<button type="button" class="btn-confirm" id="save-address-instant-btn">Gerai</button>
+				<button type="button" class="btn-cancel" onclick="document.getElementById('map-modal').close()">Atšaukti</button>
+			</div>
+		</dialog>
 	</div>
 
 	@* Financial transaction specification *@
@@ -341,14 +461,126 @@
 			<span>Iš Viso</span>
 			<span>@Model.Total.ToString("0.00") €</span>
 		</div>
-		
+
 		@if (Model.HasUnavailableItems)
 		{
 			<div class="checkout-warning">
 				<i class="fa-solid fa-circle-exclamation"></i> Negalite tęsti, kol krepšelyje yra neparduodamų prekių!
 			</div>
 		}
-		
-		<button class="btn-checkout" @(Model.CanCheckout ? "" : "disabled")>Užsakyti</button>
+
+		<button type="button"
+				class="btn-checkout"
+				id="checkout-trigger-btn"
+		@(Model.CanCheckout ? "" : "disabled")>
+			Užsakyti
+		</button>
 	</div>
+</div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+
+		// ==========================================
+		// FEATURE 1: Instant Address Saving
+		// ==========================================
+		const saveAddressBtn = document.getElementById("save-address-instant-btn");
+		if (saveAddressBtn) {
+			saveAddressBtn.addEventListener("click", function () {
+				const modal = document.getElementById("map-modal");
+				const address = document.getElementById("modal-address").value;
+				const previewText = document.getElementById("address-preview");
+
+				if (!address.trim()) {
+					alert("Prašome įvesti adresą!");
+					return;
+				}
+
+				const formData = new FormData();
+				formData.append("address", address);
+
+				fetch('/Cart/SaveAddress', {
+					method: 'POST',
+					body: formData
+				})
+				.then(response => {
+					if (response.ok) {
+						modal.close();
+						previewText.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #1bd15d;"></i> <strong>Adresas išsaugotas duomenų bazėje:</strong> ${address}`;
+						previewText.style.display = "block";
+					} else {
+						alert("Sistemos klaida bandant išsaugoti adresą.");
+					}
+				})
+				.catch(error => {
+					console.error("Error saving address:", error);
+					alert("Nepavyko susisiekti su serveriu.");
+				});
+			});
+		}
+
+		// ==========================================
+		// FEATURE 2: Finalize Order & Spin Overlay
+		// ==========================================
+		const checkoutBtn = document.getElementById("checkout-trigger-btn");
+		if (checkoutBtn) {
+			checkoutBtn.addEventListener("click", function (event) {
+				event.preventDefault(); // Safely stop unexpected form reloads
+
+				const overlay = document.getElementById("payment-overlay");
+
+				// 1. Instantly display full screen spinny layout
+				if (overlay) {
+					overlay.style.setProperty("display", "flex", "important");
+				}
+
+				// 2. Secretly hit backend controller loop via fetch
+				fetch('/Cart/FinalizeOrder', {
+					method: 'POST'
+				})
+				.then(response => {
+					if (!response.ok) {
+						throw new Error("Server error code: " + response.status);
+					}
+					return response.json();
+				})
+				.then(data => {
+					if (data.success) {
+						// 3. Force artificial 1.5-second spin delay for user experience
+						setTimeout(function() {
+							window.location.href = data.redirectUrl;
+						}, 1500);
+					} else {
+						if (overlay) overlay.style.display = "none";
+						alert("Mokėjimo klaida: " + data.message);
+					}
+				})
+				.catch(error => {
+					console.error("Checkout transaction failed:", error);
+					if (overlay) overlay.style.display = "none";
+					alert("Nepavyko susisiekti su serveriu.");
+				});
+			});
+		}
+
+	});
+</script>
+
+<!-- Full Screen Dummy Processing Screen Overlay Layer -->
+<div id="payment-overlay" style="
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: sans-serif;">
+
+	<i class="fa-solid fa-spinner fa-spin" style="font-size: 4rem; color: #1bd15d; margin-bottom: 20px;"></i>
+
+	<h2 style="color: #222; font-weight: bold; margin-bottom: 8px;">Vykdomas mokėjimas...</h2>
+	<p style="color: #666; margin: 0;">Prašome neuždaryti lango, apdorojama transakcija.</p>
 </div>
