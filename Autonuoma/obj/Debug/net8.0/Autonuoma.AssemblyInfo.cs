@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Autonuoma")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+421b06ec4906ff968aa17d832aef4cb58677e32b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e911c7c9a40a41f0169a5da93510450b9f844103")]
 [assembly: System.Reflection.AssemblyProductAttribute("Autonuoma")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Autonuoma")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

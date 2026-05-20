@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XHUrP8vclpA=",
+  "dgSpecHash": "mzDUaB0FWOM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\mangi\\OneDrive\\Documents\\boltfood sistema 2\\Autonuoma\\Autonuoma.csproj",
+  "projectFilePath": "C:\\Users\\mangi\\documents\\xampp\\htdocs\\boltfood sistema 2\\Autonuoma\\Autonuoma.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mangi\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "C:\\Users\\mangi\\.nuget\\packages\\google.protobuf\\3.25.1\\google.protobuf.3.25.1.nupkg.sha512",

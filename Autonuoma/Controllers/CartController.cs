@@ -3,6 +3,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Org.Ktu.Isk.P175B602.Autonuoma.Models;
+using Org.Ktu.Isk.P175B602.Autonuoma.Repositories;
 
 /// <summary>
 /// Controller for cart operations.
@@ -22,6 +23,7 @@ public class CartController : ControllerBase
 	public ActionResult Index()
 	{
 		var cart = new CartViewModel();
+		cart.Items = CartRepo.ListItems(1);
 
 		if (BlockEmptyCartAccess && !cart.Items.Any())
 		{
