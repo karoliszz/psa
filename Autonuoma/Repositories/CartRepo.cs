@@ -37,4 +37,71 @@ public class CartRepo : RepoBase
 
 		return result;
 	}
+
+	public static int EnsureCartExists(int userId, int restId)
+	{
+		var drc = Sql.Query($@"
+			SELECT id 
+			FROM `{Config.TblPrefix}krepselis`
+			WHERE fk_Vartotojasid = ?uid AND fk_Restoranasid = ?rid
+			LIMIT 1",
+			args => {
+				args.Add("?uid", userId);
+				args.Add("?rid", restId);
+			}
+		);
+
+		if (drc.Count > 0)
+			return Convert.ToInt32(drc[0]["id"]);
+
+		var newId = Sql.Insert($@"
+			INSERT INTO `{Config.TblPrefix}krepselis`
+			(KoordinateX, KoordinateY, PristatymoAdresas, Kaina, fk_Vartotojasid, fk_Restoranasid)
+			VALUES (0, 0, '', 0, ?uid, ?rid)",
+			args => {
+				args.Add("?uid", userId);
+				args.Add("?rid", restId);
+			}
+		);
+
+		return (int)newId;
+	}
+
+
+
+	public static int InsertCartItem(int cartId, DishViewModel dish, decimal finalPrice)
+{
+    var newId = Sql.Insert($@"
+        INSERT INTO `{Config.TblPrefix}krepselioirasas`
+        (Kaina, Kiekis, fk_Patiekalasid, fk_Patiekalasfk_Restoranasid, fk_Krepselisid)
+        VALUES (?kaina, ?kiekis, ?pid, ?rid, ?cid)",
+        args =>
+        {
+            args.Add("?kaina", finalPrice);
+            args.Add("?kiekis", dish.Kiekis);
+            args.Add("?pid", dish.Id);
+            args.Add("?rid", dish.RestoranasId);
+            args.Add("?cid", cartId);
+        }
+    );
+
+    return (int)newId; // Sql.Insert grąžina AUTO_INCREMENT ID
+}
+
+
+	public static void InsertChoices(int cartItemId, List<int> variantIds)
+	{
+		foreach (var v in variantIds)
+		{
+			Sql.Insert($@"
+				INSERT INTO `{Config.TblPrefix}pasirenka`
+				(fk_KrepselioIrasasid, fk_PasirinkimoVariantasid)
+				VALUES (?ci, ?vid)",
+				args => {
+					args.Add("?ci", cartItemId);
+					args.Add("?vid", v);
+				}
+			);
+		}
+	}
 }

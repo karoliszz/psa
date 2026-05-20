@@ -1,10 +1,8 @@
-@model Org.Ktu.Isk.P175B602.Autonuoma.Models.CartViewModel
+@model List<DishViewModel>
+
 @{
-	ViewData["title"] = "Krepšelis";
-	ViewData["ShowCartButton"] = false;
+    ViewData["title"] = "Restorano meniu";
 }
-
-
 
 <style>
 	/* Layout configuration */
@@ -257,108 +255,38 @@
 </style>
 
 <div class="cart-wrapper">
-	<div class="header-container">
-		<div class="cart-header">Krepšelis</div>
-		<a href="javascript:history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Meniu</a>
-	</div>
+    <div class="header-container">
+        <div class="cart-header">Restorano meniu</div>
+        <a href="/Home/Index" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Atgal</a>
+    </div>
 
-	@if (TempData["added"] != null)
-		{
-			<script>
-				alert("Patiekalas sėkmingai įdėtas į krepšelį!");
-			</script>
-	}
+    <div class="cart-section">
+        <h3 class="section-title"><i class="fa-solid fa-utensils"></i> Patiekalai</h3>
 
-	@* Entity sequence rendering *@
-	<div class="cart-section">
-		<h3 class="section-title"><i class="fa-solid fa-utensils"></i> Jūsų Užsakymai</h3>
-		
-		@if (!Model.Items.Any())
-		{
-			<div class="empty-cart-msg">
-				Jūsų krepšelis šiuo metu tuščias.
-			</div>
-		}
-		else
-		{
-			<ul class="items-list">
-				@foreach(var item in Model.Items)
-				{
-					<li class="item-row @(item.ArParduodamas ? "" : "item-unavailable")">
-						<div class="item-info">
-							<span class="item-name">@item.Pavadinimas @(item.Kiekis > 1 && item.ArParduodamas ? $"x{item.Kiekis}" : "")</span>
-							<span class="item-desc">@item.Aprasas</span>
-							@if (!item.ArParduodamas)
-							{
-								<span class="warning-text"><i class="fa-solid fa-triangle-exclamation"></i> Šis patiekalas šiuo metu nebeparduodamas. Pašalinkite jį iš krepšelio.</span>
-							}
-						</div>
-						<div class="item-price-actions">
-							@if (item.ArParduodamas)
-							{
-								<div class="item-price">@((item.Kaina * item.Kiekis).ToString("0.00")) €</div>
-							}
-							else
-							{
-								<div class="item-price" style="text-decoration: line-through; color: #999; font-size: 16px;">--</div>
-							}
-							<button class="btn-remove" title="Pašalinti prekę"><i class="fa-solid fa-trash"></i></button>
-						</div>
-					</li>
-				}
-			</ul>
-		}
-	</div>
+        <ul class="items-list">
+            @foreach (var dish in Model)
+            {
+                <li class="item-row">
+                    <div class="item-info">
+                        <span class="item-name">@dish.Pavadinimas</span>
+                        <span class="item-desc">@dish.Aprasas</span>
+                    </div>
 
-	@* Logistics specification *@
-	<div class="cart-section">
-		<h3 class="section-title"><i class="fa-solid fa-location-dot"></i> Pristatymo Adresas</h3>
-		<div class="input-group">
-			<label for="address">Miestas, Gatvė ir Namo Numeris</label>
-			<input type="text" id="address" placeholder="Pvz.: Gedimino pr. 50, Vilnius" />
-		</div>
-		<div class="input-group">
-			<label for="instructions">Papildoma Informacija Kurjeriui</label>
-			<input type="text" id="instructions" placeholder="Durų kodas, aukštas ar kita..." />
-		</div>
-	</div>
+                    <div class="item-price-actions">
+                        <div class="item-price">@dish.BazineKaina.ToString("0.00") €</div>
+                        <a href="/Menu/Dish/@dish.Id" class="btn-checkout" style="padding:10px 20px;font-size:16px;">
+                            Pridėti
+                        </a>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
 
-	@* Financial transaction specification *@
-	<div class="cart-section">
-		<h3 class="section-title"><i class="fa-solid fa-credit-card"></i> Mokėjimo Būdas</h3>
-		<div class="input-group">
-			<label for="payment">Pasirinkite kaip norite atsiskaityti</label>
-			<select id="payment">
-				<option value="card">Banko Kortele (Pridėta: **** 1234)</option>
-				<option value="applepay">Apple Pay / Google Pay</option>
-				<option value="cash">Grynaisiais pristatymo metu</option>
-			</select>
-		</div>
-	</div>
-
-	@* Aggregate financial summary *@
-	<div class="summary-box">
-		<div class="summary-row">
-			<span>Tarpinė suma</span>
-			<span>@Model.Subtotal.ToString("0.00") €</span>
-		</div>
-		<div class="summary-row">
-			<span>Pristatymo mokestis</span>
-			<span>@(Model.HasAvailableItems ? Model.DeliveryFee.ToString("0.00") : "0.00") €</span>
-		</div>
-		<div class="summary-row summary-total">
-			<span>Iš Viso</span>
-			<span>@Model.Total.ToString("0.00") €</span>
-		</div>
-		
-		@if (Model.HasUnavailableItems)
-		{
-			<div class="checkout-warning">
-				<i class="fa-solid fa-circle-exclamation"></i> Negalite tęsti, kol krepšelyje yra neparduodamų prekių!
-			</div>
-		}		
-
-		
-		<button class="btn-checkout" @(Model.CanCheckout ? "" : "disabled")>Užsakyti</button>
-	</div>
+    @if (TempData["added"] != null)
+    {
+        <script>
+            alert("Patiekalas sėkmingai pridėtas į krepšelį!");
+        </script>
+    }
 </div>
