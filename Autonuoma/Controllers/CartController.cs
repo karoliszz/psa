@@ -15,11 +15,12 @@ public class CartController : ControllerBase
 	/// </summary>
 	private const bool BlockEmptyCartAccess = false;
 
-	/// <summary>
-	/// Handles 'Index' action for cart view.
-	/// </summary>
-	/// <returns>View to render.</returns>
-	[HttpGet]
+
+    /// <summary>
+    /// Handles 'Index' action for cart view.
+    /// </summary>
+    /// <returns>View to render.</returns>
+    [HttpGet]
 	public ActionResult Index()
 	{
 		var cart = new CartViewModel();
@@ -32,4 +33,36 @@ public class CartController : ControllerBase
 
 		return View(cart);
 	}
+
+	[HttpPost]
+    public IActionResult SaveAddress(string address)
+    {
+        float[] coords = GetCoordinates(address);
+
+        CartRepo.UpdateAddress(address, coords[0], coords[1]);
+
+        return Ok();
+    }
+
+	private float[] GetCoordinates(string address)
+	{
+
+		if(address != null)
+		{
+			return [6f, 7f];
+		}
+
+		return [0, 0];
+
+	}
+
+    [HttpPost]
+    public IActionResult FinalizeOrder()
+    {
+
+		CartRepo.FinalizeOrder();
+
+
+        return Json(new { success = true, redirectUrl = Url.Action("Index", "Order") });
+    }
 }
