@@ -1,4 +1,4 @@
-namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories;
+﻿namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories;
 
 using System.Collections.Generic;
 using Org.Ktu.Isk.P175B602.Autonuoma.Models;
@@ -13,6 +13,7 @@ public class CartRepo : RepoBase
         var query = $@"
 			SELECT 
 				p.id AS id,
+                ki.id AS kid,
 				p.Pavadinimas AS pavadinimas,
 				p.Aprasas AS aprasas,
 				ki.Kaina AS kaina,
@@ -28,6 +29,7 @@ public class CartRepo : RepoBase
 
         var result = Sql.MapAll<CartItemViewModel>(drc, (dre, t) => {
             t.Id = dre.From<int>("id");
+            t.Kid = dre.From<int>("kid");
             t.Pavadinimas = dre.From<string>("pavadinimas");
             t.Aprasas = dre.From<string>("aprasas");
             t.Kaina = dre.From<decimal>("kaina");
@@ -85,7 +87,7 @@ public class CartRepo : RepoBase
             }
         );
 
-        return (int)newId; // Sql.Insert grąžina AUTO_INCREMENT ID
+        return (int)newId; // Sql.Insert grÄ…Å¾ina AUTO_INCREMENT ID
     }
 
 
@@ -167,7 +169,7 @@ public class CartRepo : RepoBase
             'Skubiai' AS `PristatymoInstrukcijos`, 
             CURDATE() AS `Data`, 
             `Kaina`, 
-            2 AS `Statusas`,                -- 2 = 'Neapmok�tas' from statusas table
+            2 AS `Statusas`,                -- 2 = 'Neapmokëtas' from statusas table
             `fk_Vartotojasid`, 
             2 AS `fk_Kurjerisid`,           -- Default courier ID from your SQL dump
             `fk_Restoranasid`
@@ -198,4 +200,31 @@ public class CartRepo : RepoBase
 
         return 1;
     }
+    public static bool RemoveItem(int cartItemId)
+    {
+        var query1 = $@"
+        DELETE FROM `{Config.TblPrefix}pasirenka`
+        WHERE `fk_KrepselioIrasasid` = ?itemId
+    ";
+
+        var drc1 = Sql.Query(query1, args => {
+            args.Add("?itemId", cartItemId);
+        });
+
+
+
+
+        var query = $@"
+        DELETE FROM `{Config.TblPrefix}krepselioirasas`
+        WHERE `id` = ?itemId
+    ";
+
+        var drc = Sql.Query(query, args => {
+            args.Add("?itemId", cartItemId);
+        });
+
+        return true;
+    }
+
+
 }

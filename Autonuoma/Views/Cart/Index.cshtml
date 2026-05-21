@@ -1,4 +1,4 @@
-@model Org.Ktu.Isk.P175B602.Autonuoma.Models.CartViewModel
+﻿@model Org.Ktu.Isk.P175B602.Autonuoma.Models.CartViewModel
 @{
 	ViewData["title"] = "Krepšelis";
 	ViewData["ShowCartButton"] = false;
@@ -395,17 +395,19 @@
 								<span class="warning-text"><i class="fa-solid fa-triangle-exclamation"></i> Šis patiekalas šiuo metu nebeparduodamas. Pašalinkite jį iš krepšelio.</span>
 							}
 						</div>
-						<div class="item-price-actions">
-							@if (item.ArParduodamas)
+                        <div class="item-price-actions">
+                            @if (item.ArParduodamas)
 							{
-								<div class="item-price">@((item.Kaina * item.Kiekis).ToString("0.00")) €</div>
+                            <div class="item-price">@((item.Kaina * item.Kiekis).ToString("0.00")) €</div>
 							}
 							else
 							{
-								<div class="item-price" style="text-decoration: line-through; color: #999; font-size: 16px;">--</div>
+                            <div class="item-price" style="text-decoration: line-through; color: #999; font-size: 16px;">--</div>
 							}
-							<button class="btn-remove" title="Pašalinti prekę"><i class="fa-solid fa-trash"></i></button>
-						</div>
+                            <button class="btn-remove" title="Pašalinti prekę" data-item-id="@item.Kid"><i class="fa-solid fa-trash"></i></button>
+
+
+                        </div>
 					</li>
 				}
 			</ul>
@@ -571,8 +573,36 @@
 				});
 			});
 		}
+        // ==========================================
+        // FEATURE 3: Remove Item with Confirmation
+        // ==========================================
+        document.querySelectorAll('.btn-remove').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const itemId = btn.getAttribute('data-item-id');
+                if (!itemId) return;
 
-	});
+                if (confirm('Ar tikrai norite pašalinti šį patiekalą iš krepšelio?')) {
+                    const formData = new FormData();
+                    formData.append('id', itemId);
+
+                    fetch('/Cart/RemoveItem', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                location.reload();
+                            } else {
+                                alert('Nepavyko pašalinti prekės.');
+                            }
+                        })
+                        .catch(() => alert('Nepavyko susisiekti su serveriu.'));
+                }
+            });
+        });
+    });
+		
+
 </script>
 
 <!-- Full Screen Dummy Processing Screen Overlay Layer -->
