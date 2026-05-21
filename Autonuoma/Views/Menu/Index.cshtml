@@ -257,7 +257,7 @@
 <div class="cart-wrapper">
     <div class="header-container">
         <div class="cart-header">Restorano meniu</div>
-        <a href="/Home/Index" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Atgal</a>
+        <a href="/Restaurant/Index" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Atgal</a>
     </div>
 
     <div class="cart-section">
@@ -274,7 +274,7 @@
 
                     <div class="item-price-actions">
                         <div class="item-price">@dish.BazineKaina.ToString("0.00") €</div>
-                        <a href="/Menu/Dish/@dish.Id" class="btn-checkout" style="padding:10px 20px;font-size:16px;">
+                        <a href="/Menu/Dish/@dish.Id?restId=@dish.RestoranasId" class="btn-checkout" style="padding:10px 20px;font-size:16px;">
                             Pridėti
                         </a>
                     </div>
