@@ -14,8 +14,7 @@ public class RestaurantController : ControllerBase
         bool hasAddress =
             CartRepo.HasAddressInfo(userId);
 
-        ViewBag.ShowAddressPopup =
-            !hasAddress;
+        ViewBag.ShowAddressPopup =!hasAddress;
 
         // if no address yet show empty list
         if (!hasAddress)

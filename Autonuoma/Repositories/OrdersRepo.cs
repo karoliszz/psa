@@ -7,7 +7,7 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories;
 
 public class OrdersRepo
 {
-    private static string conn = "server=localhost;database=boltfood;uid=root;pwd=;";
+    private static string conn => Org.Ktu.Isk.P175B602.Autonuoma.Config.DBConnStr;
 
     // GET ALL ORDERS (Updated to accept 2 arguments from session)
     public static List<OrderViewModel> GetUserOrders(int userId, int vartotojoTipas)
