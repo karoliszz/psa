@@ -1,0 +1,95 @@
+@model OrderDetailsViewModel
+
+@{
+    ViewData["title"]="Užsakymas";
+}
+
+<div class="cart-wrapper">
+
+<div class="header-container">
+
+<div class="cart-header">
+
+Užsakymas #@Model.Id
+
+</div>
+
+<a href="/Orders"
+class="btn-back">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+Užsakymai
+
+</a>
+
+</div>
+
+<div class="cart-section">
+
+<h3 class="section-title">
+
+<i class="fa-solid fa-receipt"></i>
+
+Patiekalai
+
+</h3>
+
+<ul class="items-list">
+
+@foreach(var item in Model.Items)
+{
+<li class="item-row">
+
+<div class="item-info">
+
+<div class="item-name">
+
+@item.PatiekaloPavadinimas
+
+</div>
+
+<div class="item-desc">
+
+@item.PasirinkimuAprasymas
+
+</div>
+
+<div>
+
+Kiekis: @item.Kiekis
+
+</div>
+
+</div>
+
+<div class="item-price">
+
+@item.Kaina.ToString("0.00") €
+
+</div>
+
+</li>
+}
+
+</ul>
+
+</div>
+
+<div class="summary-box">
+
+<div class="summary-row">
+
+<span>Viso</span>
+
+<span>
+
+@Model.Kaina.ToString("0.00") €
+
+</span>
+
+</div>
+
+</div>
+
+</div>

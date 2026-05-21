@@ -35,4 +35,7 @@ public class Klientas
 	[EmailAddress]
 	[Required]
 	public string Epastas { get; set; }
+
+	[Display(Name="Vartotojo tipas")]
+	public int VartotojoTipas { get; set; }
 }
