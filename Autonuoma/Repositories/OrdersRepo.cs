@@ -17,12 +17,41 @@ public class OrdersRepo
         using var connObj = new MySqlConnection(conn);
         connObj.Open();
 
-        string sql = @"
-            SELECT u.id, u.Data, u.PristatymoAdresas, u.Kaina, s.name AS Statusas
-            FROM uzsakymas u
-            JOIN statusas s ON s.id = u.Statusas
-            WHERE u.fk_Vartotojasid = @userId
-            ORDER BY u.Data DESC";
+        // First, get the user's VartotojoTipas
+        string userTypeSQL = "SELECT COALESCE(VartotojoTipas, 1) AS VartotojoTipas FROM vartotojas WHERE id = @userId";
+        using var userTypeCmd = new MySqlCommand(userTypeSQL, connObj);
+        userTypeCmd.Parameters.AddWithValue("@userId", userId);
+        
+        int vartotojoTipas = 1;
+        using var userTypeReader = userTypeCmd.ExecuteReader();
+        if (userTypeReader.Read())
+        {
+            vartotojoTipas = (int)userTypeReader["VartotojoTipas"];
+        }
+        userTypeReader.Close();
+
+        // Build query based on VartotojoTipas
+        string sql;
+        if (vartotojoTipas == 1)
+        {
+            // Type 1: Customer - show orders where they are the customer
+            sql = @"
+                SELECT u.id, u.Data, u.PristatymoAdresas, u.Kaina, s.name AS Statusas, 1 AS VartotojoTipas
+                FROM uzsakymas u
+                JOIN statusas s ON s.id = u.Statusas
+                WHERE u.fk_Vartotojasid = @userId
+                ORDER BY u.Data DESC";
+        }
+        else
+        {
+            // Type 2: Courier - show orders where they are the courier
+            sql = @"
+                SELECT u.id, u.Data, u.PristatymoAdresas, u.Kaina, s.name AS Statusas, 2 AS VartotojoTipas
+                FROM uzsakymas u
+                JOIN statusas s ON s.id = u.Statusas
+                WHERE u.fk_Kurjerisid = @userId
+                ORDER BY u.Data DESC";
+        }
 
         using var cmd = new MySqlCommand(sql, connObj);
         cmd.Parameters.AddWithValue("@userId", userId);
@@ -37,7 +66,8 @@ public class OrdersRepo
                 Data = reader.GetDateTime("Data"),
                 Adresas = reader["PristatymoAdresas"].ToString(),
                 Statusas = reader["Statusas"].ToString(),
-                Kaina = (float)reader["Kaina"]
+                Kaina = (float)reader["Kaina"],
+                VartotojoTipas = (int)reader["VartotojoTipas"]
             });
         }
 

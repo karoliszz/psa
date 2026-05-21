@@ -7,7 +7,7 @@ using Org.Ktu.Isk.P175B602.Autonuoma.Repositories;
 
 public class OrdersController : Controller
 {
-    private const int DemoUserId = 1;
+    private const int DemoUserId = 2;
 
     // GET: /Orders
     [HttpGet]
