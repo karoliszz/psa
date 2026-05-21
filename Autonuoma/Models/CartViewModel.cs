@@ -1,4 +1,4 @@
-namespace Org.Ktu.Isk.P175B602.Autonuoma.Models;
+﻿namespace Org.Ktu.Isk.P175B602.Autonuoma.Models;
 
 using System.Collections.Generic;
 using System.Linq;
@@ -54,10 +54,16 @@ public class CartItemViewModel
 	/// </summary>
 	public int Id { get; set; }
 
-	/// <summary>
-	/// Item name.
-	/// </summary>
-	public string Pavadinimas { get; set; }
+    /// <summary>
+    /// Entity identifier.
+    /// </summary>
+    public int Kid { get; set; }
+
+
+    /// <summary>
+    /// Item name.
+    /// </summary>
+    public string Pavadinimas { get; set; }
 
 	/// <summary>
 	/// Item description.

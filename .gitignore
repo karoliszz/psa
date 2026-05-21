@@ -299,3 +299,8 @@ Autonuoma/obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.Autonuoma
 Autonuoma/obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.Autonuoma.props
 Autonuoma/obj/project.assets.json
 Autonuoma/obj/project.nuget.cache
+Autonuoma/bin/Debug/net8.0/Autonuoma.staticwebassets.runtime.json
+Autonuoma/bin/Debug/net8.0/Autonuoma.staticwebassets.endpoints.json
+Autonuoma/bin/Debug/net8.0/Autonuoma.pdb
+Autonuoma/bin/Debug/net8.0/Autonuoma.exe
+Autonuoma/bin/Debug/net8.0/Autonuoma.dll
