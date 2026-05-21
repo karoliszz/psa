@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.Generic;
 using Org.Ktu.Isk.P175B602.Autonuoma.Models;
 using MySql.Data.MySqlClient;
@@ -6,37 +7,23 @@ namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories;
 
 public class OrdersRepo
 {
-    private static string conn =
-        "server=localhost;database=boltfood;uid=root;pwd=;";
+    private static string conn = "server=localhost;database=boltfood;uid=root;pwd=;";
 
-    // GET ALL ORDERS
-    public static List<OrderViewModel> GetUserOrders(int userId)
+    // GET ALL ORDERS (Updated to accept 2 arguments from session)
+    public static List<OrderViewModel> GetUserOrders(int userId, int vartotojoTipas)
     {
         var list = new List<OrderViewModel>();
 
         using var connObj = new MySqlConnection(conn);
         connObj.Open();
 
-        // First, get the user's VartotojoTipas
-        string userTypeSQL = "SELECT COALESCE(VartotojoTipas, 1) AS VartotojoTipas FROM vartotojas WHERE id = @userId";
-        using var userTypeCmd = new MySqlCommand(userTypeSQL, connObj);
-        userTypeCmd.Parameters.AddWithValue("@userId", userId);
-        
-        int vartotojoTipas = 1;
-        using var userTypeReader = userTypeCmd.ExecuteReader();
-        if (userTypeReader.Read())
-        {
-            vartotojoTipas = (int)userTypeReader["VartotojoTipas"];
-        }
-        userTypeReader.Close();
-
-        // Build query based on VartotojoTipas
+        // The internal query path is determined by the vartotojoTipas passed from the controller session
         string sql;
         if (vartotojoTipas == 1)
         {
             // Type 1: Customer - show orders where they are the customer
             sql = @"
-                SELECT u.id, u.Data, u.PristatymoAdresas, u.Kaina, s.name AS Statusas, 1 AS VartotojoTipas
+                SELECT u.id, u.Data, u.PristatymoAdresas, u.Kaina, s.name AS Statusas
                 FROM uzsakymas u
                 JOIN statusas s ON s.id = u.Statusas
                 WHERE u.fk_Vartotojasid = @userId
@@ -46,7 +33,7 @@ public class OrdersRepo
         {
             // Type 2: Courier - show orders where they are the courier
             sql = @"
-                SELECT u.id, u.Data, u.PristatymoAdresas, u.Kaina, s.name AS Statusas, 2 AS VartotojoTipas
+                SELECT u.id, u.Data, u.PristatymoAdresas, u.Kaina, s.name AS Statusas
                 FROM uzsakymas u
                 JOIN statusas s ON s.id = u.Statusas
                 WHERE u.fk_Kurjerisid = @userId
@@ -66,27 +53,38 @@ public class OrdersRepo
                 Data = reader.GetDateTime("Data"),
                 Adresas = reader["PristatymoAdresas"].ToString(),
                 Statusas = reader["Statusas"].ToString(),
-                Kaina = (float)reader["Kaina"],
-                VartotojoTipas = (int)reader["VartotojoTipas"]
+                Kaina = Convert.ToSingle(reader["Kaina"]),
+                VartotojoTipas = vartotojoTipas // Map the type back to toggle UI buttons properly
             });
         }
 
         return list;
     }
 
-    // GET SINGLE ORDER WITH ITEMS
-    public static OrderDetailsViewModel GetOrderDetails(int orderId, int userId)
+    // GET SINGLE ORDER WITH ITEMS (Updated to accept 3 arguments from session)
+    public static OrderDetailsViewModel GetOrderDetails(int orderId, int userId, int vartotojoTipas)
     {
         OrderDetailsViewModel model = null;
 
         using var connObj = new MySqlConnection(conn);
         connObj.Open();
 
-        // 1. order header
-        string sqlOrder = @"
-            SELECT id, Kaina
-            FROM uzsakymas
-            WHERE id=@id AND fk_Vartotojasid=@userId";
+        // 1. order header (Verifies ownership based on user type)
+        string sqlOrder;
+        if (vartotojoTipas == 1)
+        {
+            sqlOrder = @"
+                SELECT id, Kaina
+                FROM uzsakymas
+                WHERE id=@id AND fk_Vartotojasid=@userId";
+        }
+        else
+        {
+            sqlOrder = @"
+                SELECT id, Kaina
+                FROM uzsakymas
+                WHERE id=@id AND fk_Kurjerisid=@userId";
+        }
 
         using (var cmd = new MySqlCommand(sqlOrder, connObj))
         {
@@ -101,7 +99,7 @@ public class OrdersRepo
             model = new OrderDetailsViewModel
             {
                 Id = (int)reader["id"],
-                Kaina = (float)reader["Kaina"],
+                Kaina = Convert.ToSingle(reader["Kaina"]),
                 Items = new List<OrderItemViewModel>()
             };
         }
@@ -124,12 +122,48 @@ public class OrdersRepo
                 {
                     PatiekaloPavadinimas = reader["PatiekaloPavadinimas"].ToString(),
                     PasirinkimuAprasymas = reader["PasirinkimuAprasymas"].ToString(),
-                    Kaina = (float)reader["Kaina"],
+                    Kaina = Convert.ToSingle(reader["Kaina"]),
                     Kiekis = (int)reader["Kiekis"]
                 });
             }
         }
 
         return model;
+    }
+
+    // UPDATES ORDER STATUS SPECIFIC TO COURIER ACTIONS
+    public static void UpdateOrderStatus(int orderId, int courierId, string statusName)
+    {
+        using var connObj = new MySqlConnection(conn);
+        connObj.Open();
+
+        string sql = "";
+
+        // Evaluate your requested state pipeline rules
+        if (statusName == "paimtas")
+        {
+            // Only update u.Statusas from 1 (Apmokėtas/Placing state) to 3 (Paimtas)
+            sql = @"
+                UPDATE uzsakymas
+                SET Statusas = 3
+                WHERE id = @orderId AND fk_Kurjerisid = @courierId";
+        }
+        else
+        {
+            // Only update u.Statusas from 3 (Paimtas) to 4 (Atiduotas)
+            sql = @"
+                UPDATE uzsakymas
+                SET Statusas = 4
+                WHERE id = @orderId AND fk_Kurjerisid = @courierId";
+        }
+
+        // Defensive check: execute only if a valid workflow path string matched
+        if (!string.IsNullOrEmpty(sql))
+        {
+            using var cmd = new MySqlCommand(sql, connObj);
+            cmd.Parameters.AddWithValue("@orderId", orderId);
+            cmd.Parameters.AddWithValue("@courierId", courierId);
+            cmd.ExecuteNonQuery();
+        }
     }
 }

@@ -1,136 +1,142 @@
-@model List<OrderViewModel>
+﻿@model List<OrderViewModel>
+    @using Microsoft.AspNetCore.Http @* Required to access Session extension methods *@
 
-@{
+    @{
     ViewData["title"] = "Mano užsakymai";
-}
 
-<style>
-.order-list{
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-}
+    // Retrieve the user type directly from the session once at the top of the view
+    int sessionUserType = Context.Session.GetInt32("UserType") ?? 1;
+    }
 
-.order-card{
-    border:2px solid #e0e0e0;
-    border-radius:12px;
-    padding:25px;
-    transition:.2s;
-}
+    <style>
+        .order-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
-.order-card:hover{
-    border-color:#1bd15d;
-}
+        .order-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 25px;
+            transition: .2s;
+        }
 
-.order-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
+            .order-card:hover {
+                border-color: #1bd15d;
+            }
 
-.order-id{
-    font-size:22px;
-    font-weight:bold;
-}
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.order-price{
-    color:#1bd15d;
-    font-size:24px;
-    font-weight:bold;
-}
+        .order-id {
+            font-size: 22px;
+            font-weight: bold;
+        }
 
-.order-info{
-    margin-top:10px;
-    color:#666;
-}
+        .order-price {
+            color: #1bd15d;
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-.btn-open{
-    margin-top:15px;
-    display:inline-block;
+        .order-info {
+            margin-top: 10px;
+            color: #666;
+        }
 
-    background:#1bd15d;
-    color:white;
+        .btn-open {
+            margin-top: 15px;
+            display: inline-block;
+            background: #1bd15d;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+        }
+    </style>
 
-    padding:10px 20px;
+    <div class="cart-wrapper">
 
-    border-radius:30px;
+        <div class="header-container">
+            <div class="cart-header">Mano užsakymai</div>
 
-    text-decoration:none;
-}
-</style>
+            <a href="/Menu" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i>
+                Meniu
+            </a>
+        </div>
 
-<div class="cart-wrapper">
-
-<div class="header-container">
-    <div class="cart-header">Mano užsakymai</div>
-
-    <a href="/Menu" class="btn-back">
-        <i class="fa-solid fa-arrow-left"></i>
-        Meniu
-    </a>
-</div>
-
-@if (!Model.Any())
+        @if (!Model.Any())
 {
-    <div class="empty-cart-msg">
-        Neturite užsakymų
-    </div>
+        <div class="empty-cart-msg">
+            Neturite užsakymų
+        </div>
 }
 else
 {
-<div class="order-list">
+        <div class="order-list">
 
-@foreach(var o in Model)
+            @foreach(var o in Model)
 {
-<div class="order-card">
+            <div class="order-card">
 
-<div class="order-header">
-<div class="order-id">
-Užsakymas #@o.Id
-</div>
+                <div class="order-header">
+                    <div class="order-id">
+                        Užsakymas #@o.Id
+                    </div>
 
-<div class="order-price">
-@o.Kaina.ToString("0.00") €
-</div>
-</div>
+                    <div class="order-price">
+                        @o.Kaina.ToString("0.00") €
+                    </div>
+                </div>
 
-<div class="order-info">
+                <div class="order-info">
+                    <div>Data: @o.Data.ToString("yyyy-MM-dd")</div>
+                    <div>Adresas: @o.Adresas</div>
+                    <div>Statusas: @o.Statusas</div>
+                </div>
 
-<div>
-Data: @o.Data.ToString("yyyy-MM-dd")
-</div>
+                <a class="btn-open" href="/Orders/Order/@o.Id">
+                    Peržiūrėti
+                </a>
 
-<div>
-Adresas: @o.Adresas
-</div>
-
-<div>
-Statusas: @o.Statusas
-</div>
-
-</div>
-
-<a class="btn-open"
-href="/Orders/Order/@o.Id">
-
-Peržiūrėti
-
-</a>
-
-@if (o.VartotojoTipas == 2)
+                @* Changed condition to check the global session variable instead of o.VartotojoTipas *@
+                @if (sessionUserType == 2)
+    {
+                
+                <div style="display: inline-block; margin-top: 15px;">
+                    @if (o.Statusas == "Pagamintas")
 {
-    <button class="btn-open" style="background: #ff9500; margin-left: 10px;">
-        Užsakymas paimtas iš restorano
-    </button>
-    <button class="btn-open" style="background: #ff6b6b; margin-left: 10px;">
-        Užsakymas atiduotas
-    </button>
+                    <form asp-controller="Orders" asp-action="UpdateStatus" method="post" style="display: inline;">
+                        <input type="hidden" name="orderId" value="@o.Id" />
+                        <input type="hidden" name="statusas" value="paimtas"/>
+                        <button type="submit" class="btn-open" style="background: #ff9500; margin-left: 10px; border: none; cursor: pointer;">
+                            Užsakymas paimtas iš restorano
+                        </button>
+                    </form>
+                    }
+
+                    @if (o.Statusas == "Paimtas")
+                    {
+                    <form asp-controller="Orders" asp-action="UpdateStatus" method="post" style="display: inline;">
+                        <input type="hidden" name="orderId" value="@o.Id" />
+                        <input type="hidden" name="Statusas" value="atiduotas"/>
+                        <button type="submit" class="btn-open" style="background: #ff6b6b; margin-left: 10px; border: none; cursor: pointer;">
+                            Užsakymas atiduotas
+                        </button>
+                    </form>
+                    }
+                </div>
+    }
+
+            </div>
 }
 
-</div>
+        </div>
 }
 
-</div>
-}
-
-</div>
+    </div>

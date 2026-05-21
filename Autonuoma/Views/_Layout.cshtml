@@ -70,7 +70,7 @@
         }
 
         /* Floating Krepselis Button */
-        @keyframes fadeInCart {
+        @@keyframes fadeInCart {
             0% {
                 opacity: 0;
                 transform: translateX(-50%) translateY(15px);
@@ -185,25 +185,16 @@
                         <option value="1" selected=@(currentSelectedValue == 1)>klientas</option>
                         <option value="2" selected=@(currentSelectedValue == 2)>kurjeris1</option>
                         <option value="3" selected=@(currentSelectedValue == 3)>kurjeris2</option>
-                        <option value="4" selected=@(currentSelectedValue == 4)>restoranas1</option>
-                        <option value="5" selected=@(currentSelectedValue == 5)>restoranas2</option>
-                        <option value="6" selected=@(currentSelectedValue == 6)>restoranas3</option>
-                        <option value="7" selected=@(currentSelectedValue == 7)>restoranas4</option>
                     </select>
                 </form>
             </li>
-
+            @if (userType == 1) // Courier view
+            {
             <li><a href="/Restaurant">Restoranai</a></li>
-
+            }
             @* Keep your branch's specific validation menus *@
-            @if (userType == 2) // Courier view
-            {
-            <li><a href="/Deliveries">Pristatymai</a></li>
-            }
-            @if (userType == 3) // Restaurant admin view
-            {
-            <li><a href="/Restaurant/Manage">Restorano Valdymas</a></li>
-            }
+
+            
         </ul>
     </div>
 
@@ -221,14 +212,14 @@
     }
 
     @* Show active system orders tracker link only to authorized clients, couriers, or admins *@
-    @if (userType != null)
-    {
-        if (ViewData["ShowOrdersButton"] == null || (bool)ViewData["ShowOrdersButton"] == true)
+    
+    
+        @if (ViewData["ShowOrdersButton"] == null || (bool)ViewData["ShowOrdersButton"] == true)
         {
     <a href="/Orders" class="btn-uzsakymai">
         <i class="fa-solid fa-receipt"></i> Užsakymai
     </a>
         }
-    }
+    
 </body>
 </html>
