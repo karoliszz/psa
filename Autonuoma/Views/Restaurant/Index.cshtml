@@ -1,0 +1,145 @@
+<!-- ===========================
+FILE: Views/Restaurant/Index.cshtml
+=========================== -->
+
+@model List<Org.Ktu.Isk.P175B602.Autonuoma.Models.RestaurantViewModel>
+
+@{
+    ViewData["Title"] = "Restoranai";
+}
+
+<style>
+    .restaurant-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .restaurant-box {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 20px;
+        background: white;
+    }
+
+    .restaurant-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #1bd15d;
+        margin-bottom: 10px;
+    }
+
+    .restaurant-desc {
+        margin-bottom: 10px;
+    }
+
+    .restaurant-address {
+        color: #777;
+        margin-bottom: 15px;
+    }
+
+    .btn-menu {
+        display: inline-block;
+        background: #1bd15d;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    dialog {
+        border: none;
+        border-radius: 12px;
+        padding: 25px;
+        width: 400px;
+    }
+
+    dialog::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+    }
+</style>
+
+@if ((bool)ViewBag.ShowAddressPopup)
+{
+    <dialog id="address-modal">
+
+        <h2>Įveskite adresą</h2>
+
+        <input type="text" id="address" placeholder="Adresas" style="width:100%;padding:10px;margin-bottom:10px;" />
+
+        <input type="number" id="coordX" placeholder="Koordinate X" style="width:100%;padding:10px;margin-bottom:10px;" />
+
+        <input type="number" id="coordY" placeholder="Koordinate Y" style="width:100%;padding:10px;margin-bottom:10px;" />
+
+        <button id="save-address-btn"
+                style="padding:10px 20px;background:#1bd15d;color:white;border:none;border-radius:6px;">
+            Išsaugoti
+        </button>
+
+    </dialog>
+
+    <script>
+        const modal =
+            document.getElementById("address-modal");
+
+        modal.showModal();
+
+        document
+            .getElementById("save-address-btn")
+            .addEventListener("click", function () {
+
+                const address =
+                    document.getElementById("address").value;
+
+                const coordinateX =
+                    document.getElementById("coordX").value;
+
+                const coordinateY =
+                    document.getElementById("coordY").value;
+
+                const formData = new FormData();
+
+                formData.append("address", address);
+                formData.append("coordinateX", coordinateX);
+                formData.append("coordinateY", coordinateY);
+
+                fetch('/Cart/SaveAddress', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(r => {
+                        if (r.ok) {
+                            location.reload();
+                        }
+                    });
+            });
+    </script>
+}
+
+<div class="restaurant-list">
+
+    @foreach (var item in Model)
+    {
+        <div class="restaurant-box">
+
+            <div class="restaurant-title">
+                @item.Pavadinimas
+            </div>
+
+            <div class="restaurant-desc">
+                @item.Aprasas
+            </div>
+
+            <div class="restaurant-address">
+                @item.Adresas
+            </div>
+
+            <a class="btn-menu" href="/Restaurant/Select/@item.Id">
+                Peržiūrėti meniu
+            </a>
+
+        </div>
+    }
+
+</div>

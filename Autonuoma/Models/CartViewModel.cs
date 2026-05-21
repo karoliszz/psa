@@ -1,3 +1,4 @@
+
 namespace Org.Ktu.Isk.P175B602.Autonuoma.Models;
 
 using System.Collections.Generic;
@@ -17,6 +18,21 @@ public class CartViewModel
 	/// Delivery fee amount.
 	/// </summary>
 	public decimal DeliveryFee { get; set; } = 1.50m;
+
+	/// <summary>
+	/// Saved address.
+	/// </summary>
+	public string PristatymoAdresas { get; set; } = "";
+
+	/// <summary>
+	/// X coordinate.
+	/// </summary>
+	public float KoordinateX { get; set; }
+
+	/// <summary>
+	/// Y coordinate.
+	/// </summary>
+	public float KoordinateY { get; set; }
 
 	/// <summary>
 	/// Subtotal of available items.
@@ -49,33 +65,15 @@ public class CartViewModel
 /// </summary>
 public class CartItemViewModel
 {
-	/// <summary>
-	/// Entity identifier.
-	/// </summary>
 	public int Id { get; set; }
 
-	/// <summary>
-	/// Item name.
-	/// </summary>
 	public string Pavadinimas { get; set; }
 
-	/// <summary>
-	/// Item description.
-	/// </summary>
 	public string Aprasas { get; set; }
 
-	/// <summary>
-	/// Item price.
-	/// </summary>
 	public decimal Kaina { get; set; }
 
-	/// <summary>
-	/// Item quantity.
-	/// </summary>
 	public int Kiekis { get; set; } = 1;
-	
-	/// <summary>
-	/// Item availability status.
-	/// </summary>
+
 	public bool ArParduodamas { get; set; } = true;
 }

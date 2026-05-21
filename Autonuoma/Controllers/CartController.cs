@@ -1,6 +1,6 @@
+
 namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers;
 
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Org.Ktu.Isk.P175B602.Autonuoma.Models;
 using Org.Ktu.Isk.P175B602.Autonuoma.Repositories;
@@ -10,59 +10,51 @@ using Org.Ktu.Isk.P175B602.Autonuoma.Repositories;
 /// </summary>
 public class CartController : ControllerBase
 {
-	/// <summary>
-	/// Configuration flag. If true, prevents access to the cart view when the cart is empty.
-	/// </summary>
 	private const bool BlockEmptyCartAccess = false;
 
-
-    /// <summary>
-    /// Handles 'Index' action for cart view.
-    /// </summary>
-    /// <returns>View to render.</returns>
-    [HttpGet]
+	[HttpGet]
 	public ActionResult Index()
 	{
-		var cart = new CartViewModel();
-		cart.Items = CartRepo.ListItems(1);
+		int userId =
+			HttpContext.Session.GetInt32("UserId") ?? 1;
 
-		if (BlockEmptyCartAccess && !cart.Items.Any())
-		{
-			return NotFound();
-		}
+		var cart =
+			CartRepo.GetAddressInfo(userId);
+
+		cart.Items =
+			CartRepo.ListItems(1);
 
 		return View(cart);
 	}
 
 	[HttpPost]
-    public IActionResult SaveAddress(string address)
-    {
-        float[] coords = GetCoordinates(address);
-
-        CartRepo.UpdateAddress(address, coords[0], coords[1]);
-
-        return Ok();
-    }
-
-	private float[] GetCoordinates(string address)
+	public IActionResult SaveAddress(
+		string address,
+		float coordinateX,
+		float coordinateY)
 	{
+		int userId =
+			HttpContext.Session.GetInt32("UserId") ?? 1;
 
-		if(address != null)
-		{
-			return [6f, 7f];
-		}
+		CartRepo.UpdateAddress(
+			userId,
+			address,
+			coordinateX,
+			coordinateY
+		);
 
-		return [0, 0];
-
+		return Ok();
 	}
 
-    [HttpPost]
-    public IActionResult FinalizeOrder()
-    {
-
+	[HttpPost]
+	public IActionResult FinalizeOrder()
+	{
 		CartRepo.FinalizeOrder();
 
-
-        return Json(new { success = true, redirectUrl = Url.Action("Index", "Order") });
-    }
+		return Json(new
+		{
+			success = true,
+			redirectUrl = Url.Action("Index", "Order")
+		});
+	}
 }

@@ -1,14 +1,15 @@
 namespace Org.Ktu.Isk.P175B602.Autonuoma;
 
 using System.Collections.Concurrent;
+using Microsoft.AspNetCore.Http;
 using NLog;
-
 
 /// <summary>
 /// <para>Program entry class.</para>
 /// <para>Static members are thread safe, instance members are not.</para>
 /// </summary>
-public class Program {
+public class Program
+{
 	/// <summary>
 	/// Logger for this class.
 	/// </summary>
@@ -26,6 +27,7 @@ public class Program {
 			{
 				Layout = @"${date:format=HH\:mm\:ss}|${level}| ${message} ${exception}"
 			};
+
 		config.AddTarget(console);
 		config.AddRuleForAllLevels(console);
 
@@ -54,58 +56,87 @@ public class Program {
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-			//set the address and port the Kestrel server should bind to
+			// set the address and port the Kestrel server should bind to
 			builder.WebHost.ConfigureKestrel(opts =>
 			{
 				opts.Listen(System.Net.IPAddress.Loopback, 5000);
 			});
 
-			//add services
+			// add services
 			builder.Services
 				.AddRazorPages()
-				.AddRazorOptions(opts => {
-					//this will allow having _Exception.cshtml as the root view
+				.AddRazorOptions(opts =>
+				{
+					// this will allow having _Exception.cshtml as the root view
 					opts.ViewLocationFormats.Add("/Views/{0}.cshtml");
 				});
 
-			//build the web app
+			// SESSION SUPPORT
+			builder.Services.AddDistributedMemoryCache();
+
+			builder.Services.AddSession(options =>
+			{
+				options.IdleTimeout = TimeSpan.FromHours(2);
+				options.Cookie.HttpOnly = true;
+				options.Cookie.IsEssential = true;
+			});
+
+			// build the web app
 			var app = builder.Build();
 
-			//initialize configuration helper
+			// initialize configuration helper
 			Config.CreateSingletonInstance(app.Configuration);
 
-			//add middleware to set request ID and no-cache headers
+			// add middleware to set request ID and no-cache headers
 			app.Use(async (context, next) =>
 			{
-				//set request ID to be able to correlate request descriptors
+				// set request ID to be able to correlate request descriptors
 				context.Items["HttpRequestID"] = Guid.NewGuid().ToString();
 
-				//set no-cache headers
-				context.Response.Headers.CacheControl = 
+				// set no-cache headers
+				context.Response.Headers.CacheControl =
 					#pragma warning disable CA1861
-					new [] { 
-						"no-store, no-cache, must-revalidate, max-age=0", 
-						"post-check=0, pre-check=0" 
+					new[]
+					{
+						"no-store, no-cache, must-revalidate, max-age=0",
+						"post-check=0, pre-check=0"
 					};
 					#pragma warning restore CA1861
+
 				context.Response.Headers.Pragma = "no-cache";
 
-				//invoke next middleware in chain
+				// invoke next middleware in chain
 				await next();
 			});
 
-			//add request processing middleware
+			// middleware
 			app.UseStaticFiles();
+
 			app.UseRouting();
+
+			// ENABLE SESSION
+			app.UseSession();
+
+			// HARDCODED USER SESSION
+			app.Use(async (context, next) =>
+			{
+				if (context.Session.GetInt32("UserId") == null)
+				{
+					context.Session.SetInt32("UserId", 1);
+				}
+
+				await next();
+			});
+
 			app.UseAuthorization();
 
 			app.MapDefaultControllerRoute();
 			app.MapRazorPages();
 
-			//run the web app
+			// run the web app
 			app.Run();
 		}
-		catch( Exception e )
+		catch (Exception e)
 		{
 			log.Error(e, "Unhandled exception caught when initializing program. The main thread is now dead.");
 		}
