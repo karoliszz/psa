@@ -1,10 +1,10 @@
+﻿@using Microsoft.AspNetCore.Http
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BoltFood Sistema</title>
-    <!-- Include FontAwesome for icons used in other views -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         body {
@@ -22,12 +22,14 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .navbar-brand {
             font-size: 24px;
             font-weight: bold;
             color: #1bd15d;
             text-decoration: none;
         }
+
         .navbar-nav {
             list-style: none;
             display: flex;
@@ -35,46 +37,48 @@
             margin: 0;
             padding: 0;
         }
-        .navbar-nav a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-        }
+
+            .navbar-nav a {
+                text-decoration: none;
+                color: #333;
+                font-weight: 500;
+            }
         /* Floating Orders Button */
         .btn-uzsakymai {
             position: fixed;
             bottom: 30px;
             right: 30px;
-
             z-index: 1000;
             background-color: #007bff;
             color: #fff;
-
             padding: 15px 25px;
             text-decoration: none;
             border-radius: 30px;
-
             font-size: 16px;
             font-weight: bold;
-
             box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-
             transition: transform 0.2s, box-shadow 0.2s;
-
             animation: fadeInCart 0.4s ease-out forwards;
             opacity: 0;
         }
 
-        .btn-uzsakymai:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-            color: #fff;
-        }
-        
+            .btn-uzsakymai:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+                color: #fff;
+            }
+
         /* Floating Krepselis Button */
         @@keyframes fadeInCart {
-            0% { opacity: 0; transform: translateX(-50%) translateY(15px); }
-            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(15px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
         }
 
         .btn-krepselis {
@@ -98,12 +102,12 @@
             animation: fadeInCart 0.4s ease-out forwards;
             opacity: 0; /* Starts hidden until animation finishes */
         }
-        .btn-krepselis:hover {
-            transform: translateX(-50%) translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-            color: #fff;
-        }
 
+            .btn-krepselis:hover {
+                transform: translateX(-50%) translateY(-3px) scale(1.02);
+                box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+                color: #fff;
+            }
         /* Main Container */
         .container {
             max-width: 1200px;
@@ -113,7 +117,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             border-radius: 8px;
         }
-
         /* Existing Template CSS */
         .main-content-header {
             display: flex;
@@ -123,43 +126,82 @@
             border-bottom: 1px solid #eee;
             padding-bottom: 10px;
         }
-        .main-content-header .title {
-            font-size: 24px;
-            font-weight: bold;
-        }
+
+            .main-content-header .title {
+                font-size: 24px;
+                font-weight: bold;
+            }
+
         .btn {
             padding: 8px 16px;
             text-decoration: none;
             border-radius: 4px;
             display: inline-block;
         }
+
         .btn-primary {
             background-color: #007bff;
             color: #fff;
         }
+
         .btn-danger {
             background-color: #dc3545;
             color: #fff;
         }
+
         table.entity-list {
             width: 100%;
             border-collapse: collapse;
         }
-        table.entity-list th, table.entity-list td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        table.entity-list th {
-            background-color: #f8f9fa;
-        }
+
+            table.entity-list th, table.entity-list td {
+                border: 1px solid #ddd;
+                padding: 12px;
+                text-align: left;
+            }
+
+            table.entity-list th {
+                background-color: #f8f9fa;
+            }
     </style>
 </head>
 <body>
+    @{
+        // Fetch the active user type from the session instance
+        int? userType = Context.Session.GetInt32("UserType");
+
+        // Grab the selected client id to keep the selection persistent in the UI dropdown list
+        int? currentSelectedValue = Context.Session.GetInt32("User id");
+    }
+
     <div class="navbar">
         <a href="/" class="navbar-brand">BoltFood Sistema</a>
         <ul class="navbar-nav">
+            <li>
+                <form method="post" action="/Session/SetValue">
+                    <select name="selectedValue" onchange="this.form.submit()">
+                        <option value="" disabled selected=@(currentSelectedValue == null)>Pasirinkite naudotoją</option>
+                        <option value="1" selected=@(currentSelectedValue == 1)>klientas</option>
+                        <option value="2" selected=@(currentSelectedValue == 2)>kurjeris1</option>
+                        <option value="3" selected=@(currentSelectedValue == 3)>kurjeris2</option>
+                        <option value="4" selected=@(currentSelectedValue == 4)>restoranas1</option>
+                        <option value="5" selected=@(currentSelectedValue == 5)>restoranas2</option>
+                        <option value="6" selected=@(currentSelectedValue == 6)>restoranas3</option>
+                        <option value="7" selected=@(currentSelectedValue == 7)>restoranas4</option>
+                    </select>
+                </form>
+            </li>
             <li><a href="/Menu">Meniu</a></li>
+
+            @* Example: Show specific navigation modules based on UserType mappings from DB *@
+            @if (userType == 2) // Courier view
+            {
+            <li><a href="/Deliveries">Pristatymai</a></li>
+            }
+            else if (userType == 3) // Restaurant admin view
+            {
+            <li><a href="/Restaurant/Manage">Restorano Valdymas</a></li>
+            }
         </ul>
     </div>
 
@@ -167,16 +209,24 @@
         @RenderBody()
     </div>
 
-    @if (ViewData["ShowCartButton"] == null || (bool)ViewData["ShowCartButton"] == true)
+    @* Custom business rule logic using your new session information *@
+    @if (userType == 1) // Only show shopping basket interface to standard clients
     {
-        <a href="/Cart" class="btn-krepselis">Krepšelis</a>
+        if (ViewData["ShowCartButton"] == null || (bool)ViewData["ShowCartButton"] == true)
+        {
+    <a href="/Cart" class="btn-krepselis">Krepšelis</a>
+        }
     }
 
-    @if (ViewData["ShowOrdersButton"] == null || (bool)ViewData["ShowOrdersButton"] == true)
+    @* Show active system orders tracker link only to authorized clients, couriers, or admins *@
+    @if (userType != null)
     {
-        <a href="/Orders" class="btn-uzsakymai">
-            <i class="fa-solid fa-receipt"></i> Užsakymai
-        </a>
+        if (ViewData["ShowOrdersButton"] == null || (bool)ViewData["ShowOrdersButton"] == true)
+        {
+    <a href="/Orders" class="btn-uzsakymai">
+        <i class="fa-solid fa-receipt"></i> Užsakymai
+    </a>
+        }
     }
 </body>
 </html>
