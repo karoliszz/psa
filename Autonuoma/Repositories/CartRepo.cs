@@ -45,12 +45,12 @@ public class CartRepo : RepoBase
 
 	public static CartViewModel GetAddressInfo(int userId)
 	{
-		var query = @"
+		var query = $@"
 			SELECT
 				PristatymoAdresas,
 				KoordinateX,
 				KoordinateY
-			FROM krepselis
+			FROM `{Config.TblPrefix}krepselis`
 			WHERE fk_Vartotojasid = ?uid
 			LIMIT 1";
 
@@ -81,9 +81,9 @@ public class CartRepo : RepoBase
 
 	public static bool HasAddressInfo(int userId)
 	{
-		var query = @"
+		var query = $@"
 			SELECT COUNT(*)
-			FROM krepselis
+			FROM `{Config.TblPrefix}krepselis`
 			WHERE fk_Vartotojasid = ?uid
 			AND PristatymoAdresas IS NOT NULL
 			AND PristatymoAdresas != ''
@@ -104,9 +104,9 @@ public class CartRepo : RepoBase
 		float c1,
 		float c2)
 	{
-		var exists = Sql.Query(@"
+		var exists = Sql.Query($@"
 			SELECT id
-			FROM krepselis
+			FROM `{Config.TblPrefix}krepselis`
 			WHERE fk_Vartotojasid = ?uid
 			LIMIT 1",
 			args =>
@@ -116,8 +116,8 @@ public class CartRepo : RepoBase
 
 		if (exists.Count == 0)
 		{
-			Sql.Insert(@"
-				INSERT INTO krepselis
+			Sql.Insert($@"
+				INSERT INTO `{Config.TblPrefix}krepselis`
 				(
 					KoordinateX,
 					KoordinateY,
@@ -146,8 +146,8 @@ public class CartRepo : RepoBase
 			return;
 		}
 
-		Sql.Query(@"
-			UPDATE krepselis
+		Sql.Query($@"
+			UPDATE `{Config.TblPrefix}krepselis`
 			SET
 				PristatymoAdresas = ?addr,
 				KoordinateX = ?x,
@@ -278,7 +278,7 @@ public class CartRepo : RepoBase
     {
         var query = $@"
         -- 1. Create a new order by copying information from the cart
-        INSERT INTO `uzsakymas` (
+        INSERT INTO `{Config.TblPrefix}uzsakymas` (
             `KoordinateX`, 
             `KoordinateY`, 
             `PristatymoAdresas`, 
