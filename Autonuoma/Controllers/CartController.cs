@@ -1,6 +1,7 @@
-
-namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers;
-
+﻿namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers;
+using System;
+using System.Diagnostics;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Org.Ktu.Isk.P175B602.Autonuoma.Models;
 using Org.Ktu.Isk.P175B602.Autonuoma.Repositories;
@@ -51,10 +52,22 @@ public class CartController : ControllerBase
 	{
 		CartRepo.FinalizeOrder();
 
-		return Json(new
-		{
-			success = true,
-			redirectUrl = Url.Action("Index", "Order")
-		});
-	}
+
+        return Json(new { success = true, redirectUrl = Url.Action("Index", "Order") });
+    }
+
+    [HttpPost]
+    public IActionResult RemoveItem(int id)
+    {
+        // Assuming userId is 1 for demo; replace with actual user/session logic as needed
+        bool removed = CartRepo.RemoveItem(id);
+
+
+        if (removed)
+            return Ok();
+        else
+            return NotFound();
+    }
+
+
 }

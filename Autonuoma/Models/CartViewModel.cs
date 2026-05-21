@@ -67,7 +67,16 @@ public class CartItemViewModel
 {
 	public int Id { get; set; }
 
-	public string Pavadinimas { get; set; }
+    /// <summary>
+    /// Entity identifier.
+    /// </summary>
+    public int Kid { get; set; }
+
+
+    /// <summary>
+    /// Item name.
+    /// </summary>
+    public string Pavadinimas { get; set; }
 
 	public string Aprasas { get; set; }
 

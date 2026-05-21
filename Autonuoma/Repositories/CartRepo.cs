@@ -1,4 +1,4 @@
-namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories;
+﻿namespace Org.Ktu.Isk.P175B602.Autonuoma.Repositories;
 
 using System.Collections.Generic;
 using Org.Ktu.Isk.P175B602.Autonuoma.Models;
@@ -13,6 +13,7 @@ public class CartRepo : RepoBase
 		var query = $@"
 			SELECT 
 				p.id AS id,
+                ki.id AS kid,
 				p.Pavadinimas AS pavadinimas,
 				p.Aprasas AS aprasas,
 				ki.Kaina AS kaina,
@@ -31,6 +32,7 @@ public class CartRepo : RepoBase
 		var result = Sql.MapAll<CartItemViewModel>(drc, (dre, t) =>
 		{
 			t.Id = dre.From<int>("id");
+       t.Kid = dre.From<int>("kid");
 			t.Pavadinimas = dre.From<string>("pavadinimas");
 			t.Aprasas = dre.From<string>("aprasas");
 			t.Kaina = dre.From<decimal>("kaina");
@@ -273,7 +275,82 @@ public class CartRepo : RepoBase
 	}
 
 	public static int FinalizeOrder()
-	{
-		return 1;
-	}
+    {
+        var query = $@"
+        -- 1. Create a new order by copying information from the cart
+        INSERT INTO `uzsakymas` (
+            `KoordinateX`, 
+            `KoordinateY`, 
+            `PristatymoAdresas`, 
+            `PristatymoInstrukcijos`, 
+            `Data`, 
+            `Kaina`, 
+            `Statusas`, 
+            `fk_Vartotojasid`, 
+            `fk_Kurjerisid`, 
+            `fk_Restoranasid`
+        )
+        SELECT 
+            `KoordinateX`, 
+            `KoordinateY`, 
+            `PristatymoAdresas`, 
+            'Skubiai' AS `PristatymoInstrukcijos`, 
+            CURDATE() AS `Data`, 
+            `Kaina`, 
+            2 AS `Statusas`,                -- 2 = 'Neapmokëtas' from statusas table
+            `fk_Vartotojasid`, 
+            2 AS `fk_Kurjerisid`,           -- Default courier ID from your SQL dump
+            `fk_Restoranasid`
+        FROM `krepselis` 
+        WHERE `id` = 1;
+
+        -- 2. Move all items over to the order lines table using the new order's ID
+        INSERT INTO `uzsakymoirasas` (
+            `PatiekaloPavadinimas`, 
+            `PasirinkimuAprasymas`, 
+            `Kaina`, 
+            `Kiekis`, 
+            `fk_Uzsakymasid`
+        )
+        SELECT 
+            p.`Pavadinimas`, 
+            p.`Aprasas`, 
+            ki.`Kaina`, 
+            ki.`Kiekis`, 
+            LAST_INSERT_ID()                -- Automatically grabs the ID generated in step 1
+        FROM `krepselioirasas` ki
+        JOIN `patiekalas` p ON ki.`fk_Patiekalasid` = p.`id`
+        WHERE ki.`fk_Krepselisid` = 1";
+
+
+        var drc = Sql.Query(query, args => {
+        });
+
+        return 1;
+    }
+    public static bool RemoveItem(int cartItemId)
+    {
+        var query1 = $@"
+        DELETE FROM `{Config.TblPrefix}pasirenka`
+        WHERE `fk_KrepselioIrasasid` = ?itemId
+    ";
+
+        var drc1 = Sql.Query(query1, args => {
+            args.Add("?itemId", cartItemId);
+        });
+
+
+
+
+        var query = $@"
+        DELETE FROM `{Config.TblPrefix}krepselioirasas`
+        WHERE `id` = ?itemId
+    ";
+
+        var drc = Sql.Query(query, args => {
+            args.Add("?itemId", cartItemId);
+        });
+
+        return true;
+    }
 }

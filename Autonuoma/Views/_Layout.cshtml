@@ -40,6 +40,36 @@
             color: #333;
             font-weight: 500;
         }
+        /* Floating Orders Button */
+        .btn-uzsakymai {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+
+            z-index: 1000;
+            background-color: #007bff;
+            color: #fff;
+
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 30px;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+
+            transition: transform 0.2s, box-shadow 0.2s;
+
+            animation: fadeInCart 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        .btn-uzsakymai:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+            color: #fff;
+        }
         
         /* Floating Krepselis Button */
         @@keyframes fadeInCart {
@@ -138,10 +168,16 @@
         @RenderBody()
     </div>
 
-    <!-- Floating Cart Button (Can be disabled by setting ViewData["ShowCartButton"] = false in the view) -->
     @if (ViewData["ShowCartButton"] == null || (bool)ViewData["ShowCartButton"] == true)
     {
         <a href="/Cart" class="btn-krepselis">Krepšelis</a>
+    }
+
+    @if (ViewData["ShowOrdersButton"] == null || (bool)ViewData["ShowOrdersButton"] == true)
+    {
+        <a href="/Orders" class="btn-uzsakymai">
+            <i class="fa-solid fa-receipt"></i> Užsakymai
+        </a>
     }
 </body>
 </html>
