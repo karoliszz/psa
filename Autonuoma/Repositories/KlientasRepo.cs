@@ -2,7 +2,8 @@
 
 using Org.Ktu.Isk.P175B602.Autonuoma.Models;
 
-
+using System.Data; // Ensure this is at the top of your file if not already present
+using System;
 /// <summary>
 /// Database operations related to 'Klientas' entity.
 /// </summary>
@@ -53,7 +54,47 @@ public class KlientasRepo : RepoBase
 		return null;
 	}
 
-	public static void Insert(Klientas klientas)
+
+
+    public static int? GetUserType(int id)
+    {
+        var query = $@"SELECT VartotojoTipas FROM `{Config.TblPrefix}klientai` WHERE id=?id";
+
+        // 1. Safe-guard the database call inside a try-catch block
+        try
+        {
+            var drc = Sql.Query(query, args => {
+                args.Add("?id", id);
+            });
+
+            // 2. Check if the returned data row collection itself is null or empty
+            if (drc == null || drc.Count == 0)
+            {
+                return null;
+            }
+
+            // 3. Double check that the row and column exists before converting
+            if (drc[0] != null)
+            {
+                var rawValue = drc[0]["VartotojoTipas"];
+
+                if (rawValue != DBNull.Value && rawValue != null)
+                {
+                    return Convert.ToInt32(rawValue);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // If your Sql utility wrapper or DB connection throws an exception, catch it safely
+            System.Diagnostics.Debug.WriteLine($"Database error in GetUserType: {ex.Message}");
+        }
+
+        return null;
+    }
+
+
+    public static void Insert(Klientas klientas)
 	{
 		var query =
 			$@"INSERT INTO `{Config.TblPrefix}klientai`

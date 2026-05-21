@@ -1,4 +1,4 @@
-namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers;
+﻿namespace Org.Ktu.Isk.P175B602.Autonuoma.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 using Org.Ktu.Isk.P175B602.Autonuoma.Repositories;
@@ -9,7 +9,7 @@ public class RestaurantController : ControllerBase
     public IActionResult Index()
     {
         int userId =
-            HttpContext.Session.GetInt32("UserId") ?? 1;
+            HttpContext.Session.GetInt32("User id") ?? 1;
 
         bool hasAddress =
             CartRepo.HasAddressInfo(userId);
@@ -20,7 +20,7 @@ public class RestaurantController : ControllerBase
         // if no address yet show empty list
         if (!hasAddress)
         {
-            return View(new List<object>());
+            return View(new List<Org.Ktu.Isk.P175B602.Autonuoma.Models.RestaurantViewModel>());
         }
 
         var cartInfo =
@@ -39,7 +39,7 @@ public class RestaurantController : ControllerBase
     public IActionResult Select(int id)
     {
         int userId =
-            HttpContext.Session.GetInt32("UserId") ?? 1;
+            HttpContext.Session.GetInt32("User id") ?? 1;
 
         if (!CartRepo.HasAddressInfo(userId))
         {

@@ -17,7 +17,7 @@ public class CartController : ControllerBase
 	public ActionResult Index()
 	{
 		int userId =
-			HttpContext.Session.GetInt32("UserId") ?? 1;
+			HttpContext.Session.GetInt32("User Id") ?? 1;
 
 		var cart =
 			CartRepo.GetAddressInfo(userId);
@@ -35,7 +35,7 @@ public class CartController : ControllerBase
 		float coordinateY)
 	{
 		int userId =
-			HttpContext.Session.GetInt32("UserId") ?? 1;
+			HttpContext.Session.GetInt32("User id") ?? 1;
 
 		CartRepo.UpdateAddress(
 			userId,
@@ -53,7 +53,7 @@ public class CartController : ControllerBase
 		CartRepo.FinalizeOrder();
 
 
-        return Json(new { success = true, redirectUrl = Url.Action("Index", "Order") });
+        return Json(new { success = true, redirectUrl = Url.Action("Index", "Orders") });
     }
 
     [HttpPost]
