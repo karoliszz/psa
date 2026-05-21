@@ -17,10 +17,10 @@ public class ControllerBase : Controller
 	public override void OnActionExecuted(ActionExecutedContext context)
 	{
 		//render exception page if controller action has resulted in exception, this will ensure that any recorder queries go into browser console
-		if( context.Exception != null ) {
+		/*if( context.Exception != null ) {
 			context.Result = View("_Exception");
 			context.ExceptionHandled = true;
-		}
+		}*/
 
 		//get ID of current HTTP request
 		var requestId = (String)context.HttpContext.Items["HttpRequestID"];
