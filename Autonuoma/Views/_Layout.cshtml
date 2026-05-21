@@ -69,7 +69,7 @@
             }
 
         /* Floating Krepselis Button */
-        @@keyframes fadeInCart {
+        @keyframes fadeInCart {
             0% {
                 opacity: 0;
                 transform: translateX(-50%) translateY(15px);
@@ -191,14 +191,14 @@
                     </select>
                 </form>
             </li>
-            <li><a href="/Menu">Meniu</a></li>
+            <li><a href="/Restaurant">Restoranai</a></li>
 
             @* Example: Show specific navigation modules based on UserType mappings from DB *@
             @if (userType == 2) // Courier view
             {
             <li><a href="/Deliveries">Pristatymai</a></li>
             }
-            else if (userType == 3) // Restaurant admin view
+            @if (userType == 3) // Restaurant admin view
             {
             <li><a href="/Restaurant/Manage">Restorano Valdymas</a></li>
             }

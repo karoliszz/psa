@@ -1,6 +1,7 @@
 ﻿namespace Org.Ktu.Isk.P175B602.Autonuoma;
 
 using System.Collections.Concurrent;
+using Microsoft.AspNetCore.Http;
 using NLog;
 
 /// <summary>
@@ -26,6 +27,7 @@ public class Program
             {
                 Layout = @"${date:format=HH\:mm\:ss}|${level}| ${message} ${exception}"
             };
+
         config.AddTarget(console);
         config.AddRuleForAllLevels(console);
 
@@ -54,68 +56,83 @@ public class Program
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            //set the address and port the Kestrel server should bind to
+            // Set the address and port the Kestrel server should bind to
             builder.WebHost.ConfigureKestrel(opts =>
             {
                 opts.Listen(System.Net.IPAddress.Loopback, 5000);
             });
 
-            // 1. ADD SESSION SERVICES
-            builder.Services.AddDistributedMemoryCache(); // Required infrastructure for session storage
-            builder.Services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(20);
-                options.Cookie.HttpOnly = true;  // Fixed: added '.Cookie' here
-                options.Cookie.IsEssential = true;
-            });
-
-            //add services
+            // Add services
             builder.Services
                 .AddRazorPages()
-                .AddRazorOptions(opts => {
-                    //this will allow having _Exception.cshtml as the root view
+                .AddRazorOptions(opts =>
+                {
+                    // This will allow having _Exception.cshtml as the root view
                     opts.ViewLocationFormats.Add("/Views/{0}.cshtml");
                 });
 
-            //build the web app
+            // SESSION SUPPORT
+            builder.Services.AddDistributedMemoryCache(); // Required infrastructure for session storage
+
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(2); // Retained the 2-hour window from main
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            // Build the web app
             var app = builder.Build();
 
-            //initialize configuration helper
+            // Initialize configuration helper
             Config.CreateSingletonInstance(app.Configuration);
 
-            //add middleware to set request ID and no-cache headers
+            // Add middleware to set request ID and no-cache headers
             app.Use(async (context, next) =>
             {
-                //set request ID to be able to correlate request descriptors
+                // Set request ID to be able to correlate request descriptors
                 context.Items["HttpRequestID"] = Guid.NewGuid().ToString();
 
-                //set no-cache headers
-                context.Response.Headers.CacheControl =
+                // Set no-cache headers
 #pragma warning disable CA1861
-                    new[] {
+                context.Response.Headers.CacheControl =
+                    new[]
+                    {
                         "no-store, no-cache, must-revalidate, max-age=0",
                         "post-check=0, pre-check=0"
                     };
 #pragma warning restore CA1861
+
                 context.Response.Headers.Pragma = "no-cache";
 
-                //invoke next middleware in chain
+                // Invoke next middleware in chain
                 await next();
             });
 
-            //add request processing middleware
+            // Middleware pipeline configuration
             app.UseStaticFiles();
             app.UseRouting();
 
-            // 2. REGISTER SESSION MIDDLEWARE (Must be placed between UseRouting and MapDefaultControllerRoute)
+            // ENABLE SESSION (Must run after UseRouting to map session cookies properly)
             app.UseSession();
+
+            // HARDCODED USER SESSION FALLBACK
+            app.Use(async (context, next) =>
+            {
+                if (context.Session.GetInt32("UserId") == null)
+                {
+                    context.Session.SetInt32("UserId", 1);
+                }
+
+                await next();
+            });
 
             app.UseAuthorization();
 
             app.MapDefaultControllerRoute();
             app.MapRazorPages();
 
-            //run the web app
+            // Run the web app
             app.Run();
         }
         catch (Exception e)
